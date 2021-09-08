@@ -1,10 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import calculate_stream
 
 # Choose input data and default arrays
-z_label = 50
+z_label = 2
 Ub = 18.7
 D_r = 38.1
+
 
 input_file = 'from_paraview_u_mean_noswirl_average_data_to_2d_matplotlib.tsv'
 w_exp_file = 'exp_data/cSwB1_ns_z' + str(z_label) + '_W_MeanAndRMS.txt'
@@ -76,20 +78,23 @@ for i in range(z.size):
 
 fig, ax = plt.subplots(1, 1, figsize=[8000. / 300, 8000. / 300])
 
+smooth_func = calculate_stream.made_array(calculate_stream.f_smooth_final, r)
+
 # Tune subplot layout
 
 plt.subplots_adjust(left=0.12, bottom=0.12, wspace=0.)
-ax.plot(r, v_r, color='red', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES tangential')
+# ax.plot(r, v_r, color='red', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES tangential')
 ax.plot(r, w_r, color='violet', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES axial')
-ax.plot(r, u_r, color='teal', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES radial')
-ax.plot(r_exp_w1, w_exp1, color='green', marker='o', linewidth=10, linestyle=':', label='EXP tangential')
+# ax.plot(r, u_r, color='teal', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES radial')
+# ax.plot(r_exp_w1, w_exp1, color='green', marker='o', linewidth=10, linestyle=':', label='EXP tangential')
 ax.plot(r_exp1, u_exp1, color='blue', marker='o', linewidth=10, linestyle=':', label='EXP axial')
-ax.plot(r_exp1, v_exp1, color='orange', marker='o', linewidth=10, linestyle=':', label='EXP radial')
-ax.plot(r_exp_w2, w_exp2, color='green', marker='o', linewidth=10, linestyle=':')
-ax.plot(r_exp2, u_exp2, color='blue', marker='o', linewidth=10, linestyle=':')
-ax.plot(r_exp2, v_exp2, color='orange', marker='o', linewidth=10, linestyle=':')
+# ax.plot(r_exp1, v_exp1, color='orange', marker='o', linewidth=10, linestyle=':', label='EXP radial')
+# ax.plot(r_exp_w2, w_exp2, color='green', marker='o', linewidth=10, linestyle=':')
+# ax.plot(r_exp2, u_exp2, color='blue', marker='o', linewidth=10, linestyle=':')
+# ax.plot(r_exp2, v_exp2, color='orange', marker='o', linewidth=10, linestyle=':')
+ax.plot(r, smooth_func, color='black', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='ANALYTIC_DES')
 ax.set_xlim([0, 0.8])
-ax.set_ylim([-0.2, 1.2])
+ax.set_ylim([-0.2, 1.8])
 for axis in ['top', 'bottom', 'left', 'right']:
     ax.spines[axis].set_linewidth(5)
     ax.spines[axis].set_zorder(0)
@@ -109,5 +114,6 @@ ax.legend(fontsize=50)
 ax.set_title('z = ' + str(z_label), fontsize=60)
 ax.set_xlabel('R', fontsize=60)
 fig.tight_layout()
-
+print('Q_initial = ', calculate_stream.calc_cylinder_stream(calculate_stream.f_initial_for_q))
+print('Q_present = ', calculate_stream.calc_cylinder_stream(calculate_stream.f_smooth_for_q_final))
 plt.show()
