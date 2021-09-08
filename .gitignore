@@ -1,5 +1,7 @@
-/from_paraview_u_mean_noswirl.csv
-/from_paraview_u_mean_noswirl_average_data_to_2d_matplotlib.tsv
-/from_paraview_u_mean_swirl.csv
-/from_paraview_u_mean_swirl_average_data_to_2d_matplotlib.tsv
+/course_work/from_paraview_u_mean_noswirl.csv
+/course_work/from_paraview_u_mean_noswirl_average_data_to_2d_matplotlib.tsv
+/course_work/from_paraview_u_mean_swirl.csv
+/course_work/from_paraview_u_mean_swirl_average_data_to_2d_matplotlib.tsv
 /initial.py
+/from_paraview_turbulent.csv
+/from_paraview_turbulent_average_data_to_2d_matplotlib.tsv

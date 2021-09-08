@@ -5,7 +5,7 @@ from plot_parameters import *
 # Export csv from paraview:
 # Save Data -> Point Data + Add Meta Data + Scientific Format
 
-input_file = 'from_paraview_u_mean_noswirl.csv'
+input_file = 'from_paraview_turbulent.csv'
 x, z, y, u, w, v, uu, ww, vv, uw, uv, vw \
     = np.loadtxt(input_file,
                  usecols=(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),

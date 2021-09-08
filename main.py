@@ -3,12 +3,14 @@ import numpy as np
 import calculate_stream
 
 # Choose input data and default arrays
+
+model_type = 'on'
 z_label = 2
 Ub = 18.7
 D_r = 38.1
+FIG_NAME = f'Turbulent inlet {model_type} z = ' + str(z_label)
 
-
-input_file = 'from_paraview_u_mean_noswirl_average_data_to_2d_matplotlib.tsv'
+input_file = 'from_paraview_turbulent_average_data_to_2d_matplotlib.tsv'
 w_exp_file = 'exp_data/cSwB1_ns_z' + str(z_label) + '_W_MeanAndRMS.txt'
 uv_exp_file = 'exp_data/cSwB1_ns_z' + str(z_label) + '_UV_MeanAndRMS.txt'
 
