@@ -119,6 +119,6 @@ plot_text = 'Q_initial = ' + str(calculate_stream.calc_cylinder_stream(calculate
             'Q_present = ' + str(calculate_stream.calc_cylinder_stream(calculate_stream.f_smooth_for_q_final))
 ax.text(0.02, 1.2, plot_text, fontsize=40)
 fig.tight_layout()
-# print('Q_initial = ', calculate_stream.calc_cylinder_stream(calculate_stream.f_initial_for_q))
+print('Q_initial = ', calculate_stream.calc_cylinder_stream(calculate_stream.f_initial_for_q))
 # print('Q_present = ', calculate_stream.calc_cylinder_stream(calculate_stream.f_smooth_for_q_final))
 plt.show()
