@@ -1,12 +1,9 @@
-# file: plot_parameters.py
-
-import numpy as np
-
 # ----------------------------------------------------
 # LES simulation [right] x, y [m], u,v,w [m/s], uu,vv,ww,uv,uw,vw [m^2/s^2]
 
-D_r = 38.1 * 1e-3  # [m]
+D_r = 38.1  # [m]
 Ub_r = 18.7  # [m/s] Ub for try_11.5_0.32
+Ub = Ub_r
 
 dx_r = 0.003  # [-]
 dy_r = 0.003  # [-]
@@ -21,8 +18,8 @@ y_max = 7.14  # [-]
 n_grid_x_l = int((x_max_r - x_min_r) / dx_r) + 1
 n_grid_y_l = int((y_max - y_min) / dy_r) + 1
 
-print('nx_r: ', n_grid_x_l)
-print('ny_r: ', n_grid_y_l)
+# print('nx_r: ', n_grid_x_l)
+# print('ny_r: ', n_grid_y_l)
 
 # ----------------------------------------------------
 # PIV experiment [left]  x, y [mm], u,v,w [m/s], uu,vv,ww,uv,uw,vw [m^2/s^2]
@@ -54,3 +51,15 @@ yl_min = -1.0
 yl_max = 1.0
 dxl = 0.5
 dyl = 0.5
+
+# --------------- -------------------------------------------------------------
+# Function settings
+# --------------- -------------------------------------------------------------
+
+R_1 = 12.7 / D_r
+R_2 = 17.4 / D_r
+C_4 = 0.02
+C_5 = 0.02
+C_1 = -1711.31 - 16.469 * C_4 - 126.881 * C_5
+C_2 = 1351.93 + 19.5982 * C_4 + 134.519 * C_5
+C_3 = -259.777 - 7.70422 * C_4 - 39.7568 * C_5

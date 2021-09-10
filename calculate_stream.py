@@ -1,14 +1,6 @@
 from scipy.integrate import quad
 from math import pi
-
-D_r = 38.1
-R_1 = 12.7 / D_r
-R_2 = 17.4 / D_r
-C_4 = 0.02
-C_5 = 0.02
-C_1 = -1711.31 - 16.469 * C_4 - 126.881 * C_5
-C_2 = 1351.93 + 19.5982 * C_4 + 134.519 * C_5
-C_3 = -259.777 - 7.70422 * C_4 - 39.7568 * C_5
+from parameters import *
 
 
 def calc_cylinder_stream(func):
@@ -59,12 +51,12 @@ def f_smooth_for_q_4(r): return (- alpha * r ** 4 - beta * r ** 2 + gamma) * r
 def f_smooth_4(r): return - alpha * r ** 4 - beta * r ** 2 + gamma
 
 
-def f_smooth_for_q_final(r): return f_smooth_for_q_4(r)
+def f_smooth_for_q_final(r): return f_smooth_for_q_2(r)
 
 
-def f_smooth_final(r): return f_smooth_4(r)
+def f_smooth_final(r): return f_smooth_2(r)
 
 
 if __name__ == '__main__':
     print(calc_cylinder_stream(f_initial_for_q))
-    print(calc_cylinder_stream(f_smooth_for_q_final))
+    # print(calc_cylinder_stream(f_smooth_for_q_final))
