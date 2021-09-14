@@ -51,12 +51,22 @@ def f_smooth_for_q_4(r): return (- alpha * r ** 4 - beta * r ** 2 + gamma) * r
 def f_smooth_4(r): return - alpha * r ** 4 - beta * r ** 2 + gamma
 
 
-def f_smooth_for_q_final(r): return f_smooth_for_q_2(r)
+a2 = - (7 * Q) / (6 * pi * (R_1 - R_2) * (R_1 + R_2))
 
 
-def f_smooth_final(r): return f_smooth_2(r)
+def f_smooth_for_q_6(r): return a2 * (1 - (-(2 / (R_1 - R_2)) * r - (-R_1 - R_2) / (R_1 - R_2)) ** 6) * r
+
+
+def f_smooth_6(r): return a2 * (1 - (-(2 / (R_1 - R_2)) * r - (-R_1 - R_2) / (R_1 - R_2)) ** 6)
+
+
+def f_smooth_for_q_final(r): return f_smooth_for_q_6(r)
+
+
+def f_smooth_final(r): return f_smooth_6(r)
 
 
 if __name__ == '__main__':
     print(calc_cylinder_stream(f_initial_for_q))
+    print('alpha =', alpha, 'beta =', beta)
     # print(calc_cylinder_stream(f_smooth_for_q_final))
