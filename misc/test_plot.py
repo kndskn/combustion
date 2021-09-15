@@ -1,9 +1,16 @@
 from scipy.integrate import quad
 from math import pi
-from parameters import *
 import matplotlib.pyplot as plt
 
+# Declaration of constants
 
+R_1 = 12.7 * 1e-3
+R_2 = 18.3 * 1e-3
+C_4 = 0.02
+C_5 = 0.02
+C_1 = -1711.31 - 16.469 * C_4 - 126.881 * C_5
+C_2 = 1351.93 + 19.5982 * C_4 + 134.519 * C_5
+C_3 = -259.777 - 7.70422 * C_4 - 39.7568 * C_5
 p = [i / 100000 for i in range(18000)]
 
 
@@ -98,6 +105,4 @@ if __name__ == '__main__':
     ax.legend(fontsize=50)
     ax.set_xlabel('R', fontsize=60)
     fig.tight_layout()
-    plt.show()
-
     plt.show()
