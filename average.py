@@ -236,13 +236,13 @@ def count_averages(x, z, y, u, w, v, uu, ww, vv, uw, uv, vw):
 
     fig, ax = plt.subplots(1, 1, figsize=[1000. / 300, 8000. / 300])
 
-    # # Tune subplot layout, hspace for h interval
-    # plt.subplots_adjust(left=0.12, bottom=0.12, wspace=0.)
-    # # -------------------------------------------------------
-    # cntr = ax.contourf(x_r, y_r, u_r,
-    #                    levels=30,
-    #                    extend='both')
-    # plt.show()
+    # Tune subplot layout, hspace for h interval
+    plt.subplots_adjust(left=0.12, bottom=0.12, wspace=0.)
+    # -------------------------------------------------------
+    cntr = ax.contourf(x_r, y_r, u_r,
+                       levels=30,
+                       extend='both')
+    plt.show()
     return array_to_export, u_i
 
 

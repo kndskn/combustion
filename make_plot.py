@@ -35,10 +35,10 @@ def fill_array(inp, w_exp_file, uv_exp_file, z_label):
             w_exp2[n] = (-1) * w_exp1[i]
             n = n + 1
 
-    r_exp1 = r_exp1 / D_r
-    r_exp_w1 = r_exp_w1 / D_r
-    r_exp2 = r_exp2 / D_r
-    r_exp_w2 = r_exp_w2 / D_r
+    r_exp1 = r_exp1 / D_r / 1e+3
+    r_exp_w1 = r_exp_w1 / D_r / 1e+3
+    r_exp2 = r_exp2 / D_r / 1e+3
+    r_exp_w2 = r_exp_w2 / D_r / 1e+3
     w_exp1 = w_exp1 / Ub
     u_exp1 = u_exp1 / Ub
     v_exp1 = v_exp1 / Ub
@@ -101,8 +101,8 @@ def write_points_and_made_plot(inp_array, LES, EXP, MODEL, limits):
         ax.plot(r, v_r, color='red', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES tangential')
         ax.plot(r, w_r, color='violet', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES axial')
         ax.plot(r, u_r, color='teal', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES radial')
-        ax.plot(r_exp_w1, w_exp1, color='green', marker='o', linewidth=10, linestyle=':', label='EXP tangential')
     if EXP:
+        ax.plot(r_exp_w1, w_exp1, color='green', marker='o', linewidth=10, linestyle=':', label='EXP tangential')
         ax.plot(r_exp1, u_exp1, color='blue', marker='o', linewidth=10, linestyle=':', label='EXP axial')
         ax.plot(r_exp1, v_exp1, color='orange', marker='o', linewidth=10, linestyle=':', label='EXP radial')
         ax.plot(r_exp_w2, w_exp2, color='green', marker='o', linewidth=10, linestyle=':')
@@ -131,8 +131,8 @@ def write_points_and_made_plot(inp_array, LES, EXP, MODEL, limits):
     ax.legend(fontsize=50)
     ax.set_title('z = ' + str(z_label), fontsize=60)
     ax.set_xlabel('R', fontsize=60)
-    plot_text = 'Q_initial = ' + str(calculate_stream.calc_cylinder_stream(calculate_stream.f_initial_for_q)) + '\n' + \
-                'Q_present = ' + str(calculate_stream.calc_cylinder_stream(calculate_stream.f_smooth_for_q_final))
-    ax.text(0.02, 1.2, plot_text, fontsize=40)
+    # plot_text = 'Q_initial = ' + str(calculate_stream.calc_cylinder_stream(calculate_stream.f_initial_for_q)) + '\n' + \
+    #             'Q_present = ' + str(calculate_stream.calc_cylinder_stream(calculate_stream.f_smooth_for_q_final))
+    # ax.text(0.02, 1.2, plot_text, fontsize=40)
     fig.tight_layout()
     plt.show()
