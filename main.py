@@ -1,7 +1,5 @@
-import calculate_stream
 import average
 import make_plot
-import numpy as np
 
 # Choose plot params
 
