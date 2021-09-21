@@ -16,11 +16,11 @@ LIMITS = False
 # Choose input data
 
 FIG_NAME = f'Turbulent inlet {model_type} z = ' + str(z_label)
-input_file = 'isoterm_turb_ns_r6/isoterm_turb_ns_r6_paraview.csv'
+input_file = 'isoterm_turb_ns_r6/isoterm_r6.csv'
 w_exp = 'exp_data/cSwB1_ns_z' + str(z_label) + '_W_MeanAndRMS.txt'
 uv_exp = 'exp_data/cSwB1_ns_z' + str(z_label) + '_UV_MeanAndRMS.txt'
 out_f = 'isoterm_turb_ns_r6/isoterm_turb_ns_r6_paraview_average_data_to_2d_matplotlib.tsv'
-ave = False
+ave = True
 
 
 if __name__ == '__main__':
