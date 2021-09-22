@@ -208,16 +208,16 @@ def count_averages(x, z, y, u, w, v, uu, uw, uv, ww, vw, vv):
     # Data interpolation [new method]
     # --------------- -------------------------------------------------------------
 
-    z_i = griddata(np.transpose([x, y]), z, (x_i, y_i), method="cubic")
-    u_i = griddata(np.transpose([x, y]), u, (x_i, y_i), method="cubic")
-    v_i = griddata(np.transpose([x, y]), v, (x_i, y_i), method="cubic")
-    w_i = griddata(np.transpose([x, y]), w, (x_i, y_i), method="cubic")
-    uu_i = griddata(np.transpose([x, y]), uu, (x_i, y_i), method="cubic")
-    vv_i = griddata(np.transpose([x, y]), vv, (x_i, y_i), method="cubic")
-    ww_i = griddata(np.transpose([x, y]), ww, (x_i, y_i), method="cubic")
-    uv_i = griddata(np.transpose([x, y]), uv, (x_i, y_i), method="cubic")
-    uw_i = griddata(np.transpose([x, y]), uw, (x_i, y_i), method="cubic")
-    vw_i = griddata(np.transpose([x, y]), vw, (x_i, y_i), method="cubic")
+    z_i = griddata(np.transpose([x, y]), z, (x_i, y_i), method="nearest")
+    u_i = griddata(np.transpose([x, y]), u, (x_i, y_i), method="nearest")
+    v_i = griddata(np.transpose([x, y]), v, (x_i, y_i), method="nearest")
+    w_i = griddata(np.transpose([x, y]), w, (x_i, y_i), method="nearest")
+    uu_i = griddata(np.transpose([x, y]), uu, (x_i, y_i), method="nearest")
+    vv_i = griddata(np.transpose([x, y]), vv, (x_i, y_i), method="nearest")
+    ww_i = griddata(np.transpose([x, y]), ww, (x_i, y_i), method="nearest")
+    uv_i = griddata(np.transpose([x, y]), uv, (x_i, y_i), method="nearest")
+    uw_i = griddata(np.transpose([x, y]), uw, (x_i, y_i), method="nearest")
+    vw_i = griddata(np.transpose([x, y]), vw, (x_i, y_i), method="nearest")
 
     # --------------- -------------------------------------------------------------
     # Export output_file(s)

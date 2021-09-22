@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import calculate_stream
 from parameters import *
+from scipy.signal import savgol_filter
+from scipy.interpolate import interp1d
 
 
 def fill_array(inp, w_exp_file, uv_exp_file, z_label):
@@ -137,6 +139,19 @@ def write_points_and_made_plot(inp_array, LES_mean, EXP_mean, LES_rms, EXP_rms, 
     uu_exp2 = np.array(inp_array.get('uu_exp2'))
     vv_exp2 = np.array(inp_array.get('vv_exp2'))
     z_label = np.array(inp_array.get('z_label'))
+
+    # dx = 0.00001316
+    # x_min = 0
+    # x_max = 0.81
+    # # n_grid_x = int((x_max - x_min) / dx) + 1
+    # xi = np.linspace(start=x_min,
+    #                  stop=x_max,
+    #                  num=int((x_max - x_min) / dx),
+    #                  endpoint=True)
+    #
+    # uh1 = savgol_filter(v_r, 5, 3)
+    # fuh1 = interp1d(r, uh1)
+    # v_r = fuh1(xi)
 
     fig, ax = plt.subplots(1, 1, figsize=[8000. / 300, 8000. / 300])
 
