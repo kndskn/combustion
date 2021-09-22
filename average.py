@@ -10,7 +10,7 @@ from parameters import *
 
 
 def download_data_from_pw(inp):
-    x, z, y, u, w, v, uu, ww, vv, uw, uv, vw \
+    x, z, y, u, w, v, uu, uw, uv, ww, vw, vv \
         = np.loadtxt(inp,
                      usecols=(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
                      delimiter=',',
@@ -30,10 +30,10 @@ def download_data_from_pw(inp):
     uv = uv / Ub_r ** 2
     uw = uw / Ub_r ** 2
     vw = vw / Ub_r ** 2
-    return x, z, y, u, w, v, uu, ww, vv, uw, uv, vw
+    return x, z, y, u, w, v, uu, uw, uv, ww, vw, vv
 
 
-def count_averages(x, z, y, u, w, v, uu, ww, vv, uw, uv, vw):
+def count_averages(x, z, y, u, w, v, uu, uw, uv, ww, vw, vv):
     # rotation axis
     x0 = 0
     z0 = 0
@@ -86,13 +86,19 @@ def count_averages(x, z, y, u, w, v, uu, ww, vv, uw, uv, vw):
     urup = urup_mean - ur * up  # <u'r * u'phi>
     upuy = upuy_mean - up * v  # <u'y * u'phi>
 
+    # ----------------------------------------------------------------------------
     # Create bins for statistics
-    # looks horrible for cubic, but ok for nearest:
-    Xi = np.linspace(x_min_r, x_max_r, n_grid_x_r)
-    Yi = np.linspace(y_min, y_max, n_grid_y_r)
-    # looks better for cubic:
-    # Xi = np.linspace(x_min_r - dx_r / 2, x_max_r + dx_r / 2, n_grid_x_r + 1)
-    # Yi = np.linspace(y_min - dy_r / 2, y_max + dy_r / 2, n_grid_y_r + 1)
+    # ----------------------------------------------------------------------------
+
+    ''' Looks horrible for cubic, but ok for nearest: '''
+
+    # Xi = np.linspace(x_min_r, x_max_r, n_grid_x_r)
+    # Yi = np.linspace(y_min, y_max, n_grid_y_r)
+
+    ''' Looks better for cubic: '''
+
+    Xi = np.linspace(x_min_r - dx_r / 2, x_max_r + dx_r / 2, n_grid_x_r + 1)
+    Yi = np.linspace(y_min - dy_r / 2, y_max + dy_r / 2, n_grid_y_r + 1)
 
     r_avg = stats.binned_statistic_2d(r, y, r, 'mean', bins=[Xi, Yi])
     y_avg = stats.binned_statistic_2d(r, y, y, 'mean', bins=[Xi, Yi])
@@ -202,16 +208,16 @@ def count_averages(x, z, y, u, w, v, uu, ww, vv, uw, uv, vw):
     # Data interpolation [new method]
     # --------------- -------------------------------------------------------------
 
-    z_i = griddata(np.transpose([x, y]), z, (x_i, y_i), method="nearest")
-    u_i = griddata(np.transpose([x, y]), u, (x_i, y_i), method="nearest")
-    v_i = griddata(np.transpose([x, y]), v, (x_i, y_i), method="nearest")
-    w_i = griddata(np.transpose([x, y]), w, (x_i, y_i), method="nearest")
-    uu_i = griddata(np.transpose([x, y]), uu, (x_i, y_i), method="nearest")
-    vv_i = griddata(np.transpose([x, y]), vv, (x_i, y_i), method="nearest")
-    ww_i = griddata(np.transpose([x, y]), ww, (x_i, y_i), method="nearest")
-    uv_i = griddata(np.transpose([x, y]), uv, (x_i, y_i), method="nearest")
-    uw_i = griddata(np.transpose([x, y]), uw, (x_i, y_i), method="nearest")
-    vw_i = griddata(np.transpose([x, y]), vw, (x_i, y_i), method="nearest")
+    z_i = griddata(np.transpose([x, y]), z, (x_i, y_i), method="cubic")
+    u_i = griddata(np.transpose([x, y]), u, (x_i, y_i), method="cubic")
+    v_i = griddata(np.transpose([x, y]), v, (x_i, y_i), method="cubic")
+    w_i = griddata(np.transpose([x, y]), w, (x_i, y_i), method="cubic")
+    uu_i = griddata(np.transpose([x, y]), uu, (x_i, y_i), method="cubic")
+    vv_i = griddata(np.transpose([x, y]), vv, (x_i, y_i), method="cubic")
+    ww_i = griddata(np.transpose([x, y]), ww, (x_i, y_i), method="cubic")
+    uv_i = griddata(np.transpose([x, y]), uv, (x_i, y_i), method="cubic")
+    uw_i = griddata(np.transpose([x, y]), uw, (x_i, y_i), method="cubic")
+    vw_i = griddata(np.transpose([x, y]), vw, (x_i, y_i), method="cubic")
 
     # --------------- -------------------------------------------------------------
     # Export output_file(s)

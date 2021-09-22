@@ -62,12 +62,12 @@ def fill_array(inp, w_exp_file, uv_exp_file, z_label):
     u_exp2 = u_exp2 / Ub
     v_exp2 = v_exp2 / Ub
 
-    ww_exp1 = ww_exp1 ** (1/2) / Ub
-    uu_exp1 = uu_exp1 ** (1/2) / Ub
-    vv_exp1 = vv_exp1 ** (1/2) / Ub
-    ww_exp2 = ww_exp2 ** (1/2) / Ub
-    uu_exp2 = uu_exp2 ** (1/2) / Ub
-    vv_exp2 = vv_exp2 ** (1/2) / Ub
+    ww_exp1 = ww_exp1 / Ub
+    uu_exp1 = uu_exp1 / Ub
+    vv_exp1 = vv_exp1 / Ub
+    ww_exp2 = ww_exp2 / Ub
+    uu_exp2 = uu_exp2 / Ub
+    vv_exp2 = vv_exp2 / Ub
 
     u_r = np.zeros(z.size)
     v_r = np.zeros(z.size)
@@ -91,9 +91,12 @@ def fill_array(inp, w_exp_file, uv_exp_file, z_label):
             v_r[m] = v[i]
             u_r[m] = u[i]
             w_r[m] = w[i]
-            vv_r[m] = vv[i]
-            uu_r[m] = uu[i]
-            ww_r[m] = ww[i]
+            if not np.isnan(vv[i]):
+                vv_r[m] = vv[i] ** (1/2)
+            if not np.isnan(uu[i]):
+                uu_r[m] = uu[i] ** (1/2)
+            if not np.isnan(ww[i]):
+                ww_r[m] = ww[i] ** (1/2)
             r[m] = x[m]
             m = m + 1
 
