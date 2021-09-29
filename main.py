@@ -3,10 +3,13 @@ import make_plot
 
 # Choose plot params
 
+input_file = 'isoterm_turb_ns_r6/r6_keqn_finish.csv'
+out_f = 'isoterm_turb_ns_r6/r6_keqn_finish_average_data_to_2d_matplotlib.tsv'
 z_label = [2, 10, 30, 50]
 z_ = [z_label[i] * 1e-3 for i in range(len(z_label))]
-mean = False
+mean = True
 MODEL = False
+ave = False
 
 if mean:
     _type = 'Mean'
@@ -24,12 +27,6 @@ else:
     LES_mean = False
     EXP_mean = False
     LIMITS_MEAN = False
-
-# Choose input data
-
-input_file = 'isoterm_turb_ns_r6/r6_keqn_finish.csv'
-out_f = 'isoterm_turb_ns_r6/r6_keqn_finish_average_data_to_2d_matplotlib.tsv'
-ave = False
 
 
 if __name__ == '__main__':
