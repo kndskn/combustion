@@ -110,7 +110,7 @@ def fill_array(inp, w_exp_file, uv_exp_file, z_label):
     return output
 
 
-def write_points_and_made_plot(inp_array, LES_mean, EXP_mean, LES_rms, EXP_rms, MODEL, limits):
+def write_points_and_made_plot(inp_array, LES_mean, EXP_mean, LES_rms, EXP_rms, MODEL, limits_mean, limits_rms, name):
     x = np.array(inp_array.get('x'))
     y = np.array(inp_array.get('y'))
     z = np.array(inp_array.get('z'))
@@ -182,9 +182,11 @@ def write_points_and_made_plot(inp_array, LES_mean, EXP_mean, LES_rms, EXP_rms, 
         ax.plot(r_exp2, vv_exp2, color='orange', marker='o', linewidth=10, linestyle=':')
     if MODEL: ax.plot(r, smooth_func, color='black', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10,
                       label='ANALYTIC_DES')
-    if limits:
-        ax.set_xlim([0, 0.8])
-        ax.set_ylim([-0.2, 1.5])
+    ax.set_xlim([0, 1.0])
+    if limits_mean:
+        ax.set_ylim([-0.25, 1.5])
+    if limits_rms:
+        ax.set_ylim([0, 0.35])
     for axis in ['top', 'bottom', 'left', 'right']:
         ax.spines[axis].set_linewidth(5)
         ax.spines[axis].set_zorder(0)
@@ -207,4 +209,5 @@ def write_points_and_made_plot(inp_array, LES_mean, EXP_mean, LES_rms, EXP_rms, 
     #             'Q_present = ' + str(calculate_stream.calc_cylinder_stream(calculate_stream.f_smooth_for_q_final))
     # ax.text(0.02, 1.2, plot_text, fontsize=40)
     fig.tight_layout()
+    plt.savefig(f'{name}')
     plt.show()
