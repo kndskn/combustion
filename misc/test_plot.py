@@ -71,10 +71,10 @@ def f_smooth_for_q_6(r): return a2 * (1 - (-(2 / (R_1 - R_2)) * r - (-R_1 - R_2)
 def f_smooth_6(r): return a2 * (1 - (-(2 / (R_1 - R_2)) * r - (-R_1 - R_2) / (R_1 - R_2)) ** 6)
 
 
-def f_smooth_for_q_final(r): return f_smooth_for_q_6(r)
+def f_smooth_for_q_final(r): return f_smooth_for_q_1(r)
 
 
-def f_smooth_final(r): return f_smooth_6(r)
+def f_smooth_final(r): return f_smooth_1(r)
 
 
 if __name__ == '__main__':

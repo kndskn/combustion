@@ -7,28 +7,28 @@ model_type = 'on'
 z_label = 2
 z_ = z_label * 1e-3
 
-LES_mean = True
-# EXP_mean = True
-# LES_mean = False
-EXP_mean = False
+# LES_mean = True
+EXP_mean = True
+LES_mean = False
+# EXP_mean = False
 
 # LES_rms = True
 # EXP_rms = True
 LES_rms = False
 EXP_rms = False
 
-MODEL = False
+MODEL = True
 
-LIMITS = False
+LIMITS = True
 
 # Choose input data
 
 FIG_NAME = f'Turbulent inlet {model_type} z = ' + str(z_label)
-input_file = 'isoterm_turb_ns_r6/isoterm_r6.csv'
+input_file = 'isoterm_turb_ns_r6/r6_keqn.csv'
 w_exp = 'exp_data/cSwB1_ns_z' + str(z_label) + '_W_MeanAndRMS.txt'
 uv_exp = 'exp_data/cSwB1_ns_z' + str(z_label) + '_UV_MeanAndRMS.txt'
 out_f = 'isoterm_turb_ns_r6/isoterm_r6_average_data_to_2d_matplotlib.tsv'
-ave = True
+ave = False
 
 
 if __name__ == '__main__':
