@@ -55,19 +55,19 @@ def fill_array(inp, w_exp_file, uv_exp_file, z_label):
     r_exp2 = r_exp2 / D_r / 1e+3
     r_exp_w2 = r_exp_w2 / D_r / 1e+3
 
-    w_exp1 = w_exp1 / Ub
-    u_exp1 = u_exp1 / Ub
-    v_exp1 = v_exp1 / Ub
-    w_exp2 = w_exp2 / Ub
-    u_exp2 = u_exp2 / Ub
-    v_exp2 = v_exp2 / Ub
+    w_exp1 = w_exp1 / Ub_r
+    u_exp1 = u_exp1 / Ub_r
+    v_exp1 = v_exp1 / Ub_r
+    w_exp2 = w_exp2 / Ub_r
+    u_exp2 = u_exp2 / Ub_r
+    v_exp2 = v_exp2 / Ub_r
 
-    ww_exp1 = ww_exp1 / Ub
-    uu_exp1 = uu_exp1 / Ub
-    vv_exp1 = vv_exp1 / Ub
-    ww_exp2 = ww_exp2 / Ub
-    uu_exp2 = uu_exp2 / Ub
-    vv_exp2 = vv_exp2 / Ub
+    ww_exp1 = ww_exp1 / Ub_r
+    uu_exp1 = uu_exp1 / Ub_r
+    vv_exp1 = vv_exp1 / Ub_r
+    ww_exp2 = ww_exp2 / Ub_r
+    uu_exp2 = uu_exp2 / Ub_r
+    vv_exp2 = vv_exp2 / Ub_r
 
     u_r = np.zeros(z.size)
     v_r = np.zeros(z.size)

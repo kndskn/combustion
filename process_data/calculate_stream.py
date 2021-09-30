@@ -23,6 +23,10 @@ def f_initial_for_q(r): return U_o / Ub_r * r
 def f_initial_for_q_inner(r): return U_i / Ub_r * r
 
 
+# -------------------------------------------------------------------------------------------------- #
+# Constants
+# -------------------------------------------------------------------------------------------------- #
+
 Q = calc_cylinder_stream(f_initial_for_q, R_1, R_2)
 Q_i = calc_cylinder_stream(f_initial_for_q_inner, R_1_inner, R_2_inner)
 gamma = (6 * Q * R_1 ** 2 * R_2 ** 2) / pi / ((R_1 ** 2 - R_2 ** 2) ** 3)
