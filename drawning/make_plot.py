@@ -1,9 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import calculate_stream
+from process_data import calculate_stream
 from parameters import *
-from scipy.signal import savgol_filter
-from scipy.interpolate import interp1d
 
 
 def fill_array(inp, w_exp_file, uv_exp_file, z_label):

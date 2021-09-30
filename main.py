@@ -1,5 +1,5 @@
-import average
-import make_plot
+from process_data import average
+from drawning import make_plot
 
 # Choose plot params
 
