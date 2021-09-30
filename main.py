@@ -5,10 +5,11 @@ import make_plot
 
 input_file = 'isoterm_turb_ns_r6/r6_keqn_finish.csv'
 out_f = 'isoterm_turb_ns_r6/r6_keqn_finish_average_data_to_2d_matplotlib.tsv'
-z_label = [2, 10, 30, 50]
+z_label = [2]  # [2, 10, 30, 50]
 z_ = [z_label[i] * 1e-3 for i in range(len(z_label))]
-mean = True
-MODEL = False
+mean = False
+rms = False
+MODEL = True
 ave = False
 
 if mean:
@@ -19,7 +20,7 @@ if mean:
     LES_rms = False
     EXP_rms = False
     LIMITS_RMS = False
-else:
+elif rms:
     _type = 'Rms'
     LES_rms = True
     EXP_rms = True
@@ -27,6 +28,14 @@ else:
     LES_mean = False
     EXP_mean = False
     LIMITS_MEAN = False
+else:
+    _type = None
+    LES_rms = False
+    EXP_rms = False
+    LIMITS_RMS = False
+    LES_mean = False
+    EXP_mean = True
+    LIMITS_MEAN = True
 
 
 if __name__ == '__main__':

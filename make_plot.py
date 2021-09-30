@@ -182,7 +182,7 @@ def write_points_and_made_plot(inp_array, LES_mean, EXP_mean, LES_rms, EXP_rms, 
         ax.plot(r_exp2, vv_exp2, color='orange', marker='o', linewidth=10, linestyle=':')
     if MODEL: ax.plot(r, smooth_func, color='black', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10,
                       label='ANALYTIC_DES')
-    ax.set_xlim([0, 1.0])
+    ax.set_xlim([0, 0.75])
     if limits_mean:
         ax.set_ylim([-0.25, 1.5])
     if limits_rms:
