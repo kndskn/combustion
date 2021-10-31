@@ -3,14 +3,14 @@ from drawning import make_plot
 
 # Choose plot params
 
-input_file = 'model_data/r2_both/r2_both.csv'
+input_file = 'model_data/isotherm_new_grid/isotherm_new_grid.csv'
 out_f = 'model_data/r2_both/r2_both_average_data_to_2d_matplotlib.tsv'
 z_label = [2, 10, 30, 50]
 z_ = [z_label[i] * 1e-3 for i in range(len(z_label))]
-mean = False
-rms = True
+mean = True
+rms = False
 MODEL = False
-ave = False
+ave = True
 
 if mean:
     _type = 'Mean'
