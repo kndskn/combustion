@@ -3,7 +3,7 @@ import numpy.ma as ma
 import scipy.stats as stats
 import matplotlib.pyplot as plt
 from scipy.interpolate import griddata
-from parameters import *
+from process_data.parameters import *
 
 # Export csv from paraview:
 # Save Data -> Point Data + Add Meta Data + Scientific Format

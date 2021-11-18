@@ -1,6 +1,6 @@
 from scipy.integrate import quad
 from math import pi
-from parameters import *
+from process_data.parameters import *
 
 
 def calc_cylinder_stream(func, r1, r2):

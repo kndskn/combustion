@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from process_data import calculate_stream
-from parameters import *
+from process_data.parameters import *
 
 
 def fill_array(inp, w_exp_file, uv_exp_file, z_label):
@@ -62,13 +62,12 @@ def fill_array(inp, w_exp_file, uv_exp_file, z_label):
     u_exp2 = u_exp2 / Ub_r
     v_exp2 = v_exp2 / Ub_r
 
-    ww_exp1 = ww_exp1 / Ub_r
-    uu_exp1 = uu_exp1 / Ub_r
-    vv_exp1 = vv_exp1 / Ub_r
-    ww_exp2 = ww_exp2 / Ub_r
-    uu_exp2 = uu_exp2 / Ub_r
-    vv_exp2 = vv_exp2 / Ub_r
-
+    ww_exp1 = (ww_exp1 / Ub_r) ** 2
+    uu_exp1 = (uu_exp1 / Ub_r) ** 2
+    vv_exp1 = (vv_exp1 / Ub_r) ** 2
+    ww_exp2 = (ww_exp2 / Ub_r) ** 2
+    uu_exp2 = (uu_exp2 / Ub_r) ** 2
+    vv_exp2 = (vv_exp2 / Ub_r) ** 2
     u_r = np.zeros(z.size)
     v_r = np.zeros(z.size)
     w_r = np.zeros(z.size)
@@ -92,11 +91,11 @@ def fill_array(inp, w_exp_file, uv_exp_file, z_label):
             u_r[m] = u[i]
             w_r[m] = w[i]
             if not np.isnan(vv[i]):
-                vv_r[m] = vv[i] ** (1/2)
+                vv_r[m] = (vv[i] + v[i] ** 2) / 18.7
             if not np.isnan(uu[i]):
-                uu_r[m] = uu[i] ** (1/2)
+                uu_r[m] = (uu[i] + u[i] ** 2) / 18.7
             if not np.isnan(ww[i]):
-                ww_r[m] = ww[i] ** (1/2)
+                ww_r[m] = (ww[i] + w[i] ** 2) / 18.7
             r[m] = x[m]
             m = m + 1
 
@@ -138,19 +137,6 @@ def write_points_and_made_plot(inp_array, LES_mean, EXP_mean, LES_rms, EXP_rms, 
     vv_exp2 = np.array(inp_array.get('vv_exp2'))
     z_label = np.array(inp_array.get('z_label'))
 
-    # dx = 0.00001316
-    # x_min = 0
-    # x_max = 0.81
-    # # n_grid_x = int((x_max - x_min) / dx) + 1
-    # xi = np.linspace(start=x_min,
-    #                  stop=x_max,
-    #                  num=int((x_max - x_min) / dx),
-    #                  endpoint=True)
-    #
-    # uh1 = savgol_filter(v_r, 5, 3)
-    # fuh1 = interp1d(r, uh1)
-    # v_r = fuh1(xi)
-
     fig, ax = plt.subplots(1, 1, figsize=[8000. / 300, 8000. / 300])
 
     smooth_func = calculate_stream.made_array(calculate_stream.f_smooth_final, r)
@@ -168,23 +154,23 @@ def write_points_and_made_plot(inp_array, LES_mean, EXP_mean, LES_rms, EXP_rms, 
         ax.plot(r_exp2, u_exp2, color='blue', marker='o', linewidth=10, linestyle=':')
         ax.plot(r_exp2, v_exp2, color='orange', marker='o', linewidth=10, linestyle=':')
     if LES_rms:
-        ax.plot(r, vv_r, color='red', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES RMS tangential')
-        ax.plot(r, ww_r, color='violet', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES RMS axial')
-        ax.plot(r, uu_r, color='teal', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES RMS radial')
+        ax.plot(r, vv_r, color='teal', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES RMS tangential')
+        # ax.plot(r, ww_r, color='black', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES RMS axial')
+        # ax.plot(r, uu_r, color='yellow', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES RMS radial')
     if EXP_rms:
         ax.plot(r_exp_w1, ww_exp1, color='green', marker='o', linewidth=10, linestyle=':', label='EXP RMS tangential')
-        ax.plot(r_exp1, uu_exp1, color='blue', marker='o', linewidth=10, linestyle=':', label='EXP RMS axial')
-        ax.plot(r_exp1, vv_exp1, color='orange', marker='o', linewidth=10, linestyle=':', label='EXP RMS radial')
+        # ax.plot(r_exp1, uu_exp1, color='green', marker='o', linewidth=10, linestyle=':', label='EXP RMS axial')
+        # ax.plot(r_exp1, vv_exp1, color='orange', marker='o', linewidth=10, linestyle=':', label='EXP RMS radial')
         ax.plot(r_exp_w2, ww_exp2, color='green', marker='o', linewidth=10, linestyle=':')
-        ax.plot(r_exp2, uu_exp2, color='blue', marker='o', linewidth=10, linestyle=':')
-        ax.plot(r_exp2, vv_exp2, color='orange', marker='o', linewidth=10, linestyle=':')
+        # ax.plot(r_exp2, uu_exp2, color='green', marker='o', linewidth=10, linestyle=':')
+        # ax.plot(r_exp2, vv_exp2, color='orange', marker='o', linewidth=10, linestyle=':')
     if MODEL: ax.plot(r, smooth_func, color='black', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10,
                       label='ANALYTIC_DES')
     ax.set_xlim([0, 0.75])
     if limits_mean:
         ax.set_ylim([-0.25, 1.5])
-    if limits_rms:
-        ax.set_ylim([0, 0.35])
+    # if limits_rms:
+    #     ax.set_ylim([0, 0.03])
     for axis in ['top', 'bottom', 'left', 'right']:
         ax.spines[axis].set_linewidth(5)
         ax.spines[axis].set_zorder(0)

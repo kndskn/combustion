@@ -1,16 +1,16 @@
 from process_data import average
-from drawning import make_plot
+from process_data.drawning import make_plot
 
 # Choose plot params
 
-input_file = 'model_data/isotherm_new_grid/isotherm_new_grid.csv'
-out_f = 'model_data/r2_both/r2_both_average_data_to_2d_matplotlib.tsv'
+input_file = 'model_data/isotherm_structed_after_rans/structed_rans.csv'
+out_f = 'model_data/isotherm_structed_after_rans/structed_rans_average_data_to_2d_matplotlib.tsv'
 z_label = [2, 10, 30, 50]
 z_ = [z_label[i] * 1e-3 for i in range(len(z_label))]
-mean = True
-rms = False
+mean = False
+rms = True
 MODEL = False
-ave = True
+ave = False
 
 if mean:
     _type = 'Mean'
@@ -30,12 +30,12 @@ elif rms:
     LIMITS_MEAN = False
 else:
     _type = None
-    LES_rms = False
+    LES_rms = True
     EXP_rms = False
     LIMITS_RMS = False
-    LES_mean = False
-    EXP_mean = True
-    LIMITS_MEAN = True
+    LES_mean = True
+    EXP_mean = False
+    LIMITS_MEAN = False
 
 
 if __name__ == '__main__':
