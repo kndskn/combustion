@@ -3,12 +3,12 @@ from process_data.drawning import make_plot
 
 # Choose plot params
 
-input_file = 'model_data/isotherm_structed_after_rans/structed_rans.csv'
-out_f = 'model_data/isotherm_structed_after_rans/structed_rans_average_data_to_2d_matplotlib.tsv'
+input_file = 'model_data/ns_structed_after_rans/ns_structed_after_rans.csv'
+out_f = 'model_data/ns_structed_after_rans/ns_structed_after_rans_average_data_to_2d_matplotlib.tsv'
 z_label = [2, 10, 30, 50]
 z_ = [z_label[i] * 1e-3 for i in range(len(z_label))]
 mean = False
-rms = True
+rms = False
 MODEL = False
 ave = False
 
@@ -40,8 +40,8 @@ else:
 
 if __name__ == '__main__':
     if ave:
-        x, z, y, u, w, v, uu, ww, vv, uw, uv, vw = average.download_data_from_pw(input_file)
-        output_file = average.save(input_file, average.count_averages(x, z, y, u, w, v, uu, ww, vv, uw, uv, vw))
+        x, y, z, u, v, w, uu, vv, ww, uv, vw, uw = average.download_data_from_pw(input_file)
+        output_file = average.save(input_file, average.count_averages(x, y, z, u, v, w, uu, vv, ww, uv, vw, uw))
     else:
         output_file = out_f
     for i in range(len(z_)):
@@ -51,5 +51,3 @@ if __name__ == '__main__':
         zz = z_[i]
         make_plot.write_points_and_made_plot(make_plot.fill_array(output_file, w_exp, uv_exp, zz), LES_mean,
                                              EXP_mean, LES_rms, EXP_rms, MODEL, LIMITS_MEAN, LIMITS_RMS, FIG_NAME)
-    # print('Q_initial = ', calculate_stream.calc_cylinder_stream(calculate_stream.f_initial_for_q))
-    # print('Q_present = ', calculate_stream.calc_cylinder_stream(calculate_stream.f_smooth_for_q_final))

@@ -5,14 +5,15 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import griddata
 from process_data.parameters import *
 
+
 # Export csv from paraview:
 # Save Data -> Point Data + Add Meta Data + Scientific Format
 
 
 def download_data_from_pw(inp):
-    x, z, y, u, w, v, uu, uw, uv, ww, vw, vv \
+    x, y, z, u, v, w, uu, vv, ww, uv, vw, uw \
         = np.loadtxt(inp,
-                     usecols=(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
+                     usecols=(0, 1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14),
                      delimiter=',',
                      skiprows=1,
                      unpack=True)
@@ -30,26 +31,23 @@ def download_data_from_pw(inp):
     uv = uv / Ub_r ** 2
     uw = uw / Ub_r ** 2
     vw = vw / Ub_r ** 2
-    return x, z, y, u, w, v, uu, uw, uv, ww, vw, vv
+    return x, y, z, u, v, w, uu, vv, ww, uv, vw, uw
 
 
-def count_averages(x, z, y, u, w, v, uu, uw, uv, ww, vw, vv):
+def count_averages(x, y, z, u, v, w, uu, vv, ww, uv, vw, uw):
     # rotation axis
     x0 = 0
-    z0 = 0
+    y0 = 0
 
     print("x0:", x0)
-    print("z0:", z0)
-
-    # x = x - x0
-    # z = z - z0
+    print("y0:", y0)
 
     # --------------- -------------------------------------------------------------
     # Circumferential angle
     # --------------- -------------------------------------------------------------
 
     # theta [0; 2pi]
-    theta = np.arctan2(z, x)
+    theta = np.arctan2(y, x)
     c = np.cos(theta)
     s = np.sin(theta)
 
@@ -57,34 +55,31 @@ def count_averages(x, z, y, u, w, v, uu, uw, uv, ww, vw, vv):
     # Averaging over angle simulation [right plot]
     # --------------- -------------------------------------------------------------
 
-    # rotation matrix (or you can use x = np.sqrt(x**2 + z**2) - same result)
-    # x = x * c + z * s
-    # z = - x * s + z * c
-    r = np.sqrt(x ** 2 + z ** 2)
+    r = np.sqrt(x ** 2 + y ** 2)
 
     uu_mean = uu + u * u  # <ux * ux> = <u'x * u'x> + <ux> * <ux>
-    ww_mean = ww + w * w  # <uz * uz> = <u'z * u'z> + <uz> * <uz>
+    vv_mean = vv + v * v  # <uy * uy> = <u'y * u'y> + <uy> * <uy>
     uv_mean = uv + u * v  # <ux * uy> = <u'x * u'y> + <ux> * <uy>
     uw_mean = uw + u * w  # <ux * uz> = <u'x * u'z> + <ux> * <uz>
     vw_mean = vw + v * w  # <uy * uz> = <u'y * u'z> + <uy> * <uz>
 
     urur_mean = \
-        uu_mean * c ** 2. + ww_mean * s ** 2. + 2. * uw_mean * c * s  # <ur * ur>
+        uu_mean * c ** 2. + vv_mean * s ** 2. + 2. * uv_mean * c * s  # <ur * ur>
     upup_mean = \
-        uu_mean * s ** 2. + ww_mean * c ** 2. - 2. * uw_mean * c * s  # <uphi * uphi>
-    urup_mean = - uu_mean * c * s + uw_mean * (c ** 2. - s ** 2) + \
-                ww_mean * c * s  # <ur * uphi>
-    uruy_mean = uv_mean * c + vw_mean * s  # <ur * uy>
-    upuy_mean = - uv_mean * s + vw_mean * c  # <up * uy>
+        uu_mean * s ** 2. + vv_mean * c ** 2. - 2. * uv_mean * c * s  # <uphi * uphi>
+    urup_mean = - uu_mean * c * s + uv_mean * (c ** 2. - s ** 2) + \
+                vv_mean * c * s  # <ur * uphi>
+    uruz_mean = uw_mean * c + vw_mean * s  # <ur * uy>
+    upuz_mean = - uw_mean * s + vw_mean * c  # <up * uy>
 
-    ur = u * c + w * s  # <ur>
-    up = - u * s + w * c  # <uphi>
+    ur = u * c + v * s  # <ur>
+    up = - u * s + v * c  # <uphi>
 
     urur = urur_mean - ur * ur  # <u'r * u'r>
     upup = upup_mean - up * up  # <u'phi * u'phi>
-    uruy = uruy_mean - ur * v  # <u'r * u'y>
+    uruz = uruz_mean - ur * w  # <u'r * u'z>
     urup = urup_mean - ur * up  # <u'r * u'phi>
-    upuy = upuy_mean - up * v  # <u'y * u'phi>
+    upuz = upuz_mean - up * w  # <u'z * u'phi>
 
     # ----------------------------------------------------------------------------
     # Create bins for statistics
@@ -100,59 +95,59 @@ def count_averages(x, z, y, u, w, v, uu, uw, uv, ww, vw, vv):
     Xi = np.linspace(x_min_r - dx_r / 2, x_max_r + dx_r / 2, n_grid_x_r + 1)
     Yi = np.linspace(y_min - dy_r / 2, y_max + dy_r / 2, n_grid_y_r + 1)
 
-    r_avg = stats.binned_statistic_2d(r, y, r, 'mean', bins=[Xi, Yi])
-    y_avg = stats.binned_statistic_2d(r, y, y, 'mean', bins=[Xi, Yi])
-    theta_avg = stats.binned_statistic_2d(r, y, theta, 'mean', bins=[Xi, Yi])
-    ur_avg = stats.binned_statistic_2d(r, y, ur, 'mean', bins=[Xi, Yi])
-    v_avg = stats.binned_statistic_2d(r, y, v, 'mean', bins=[Xi, Yi])
-    up_avg = stats.binned_statistic_2d(r, y, up, 'mean', bins=[Xi, Yi])
-    urur_avg = stats.binned_statistic_2d(r, y, urur, 'mean', bins=[Xi, Yi])
-    vv_avg = stats.binned_statistic_2d(r, y, vv, 'mean', bins=[Xi, Yi])
-    upup_avg = stats.binned_statistic_2d(r, y, upup, 'mean', bins=[Xi, Yi])
-    uruy_avg = stats.binned_statistic_2d(r, y, uruy, 'mean', bins=[Xi, Yi])
-    urup_avg = stats.binned_statistic_2d(r, y, urup, 'mean', bins=[Xi, Yi])
-    upuy_avg = stats.binned_statistic_2d(r, y, upuy, 'mean', bins=[Xi, Yi])
+    r_avg = stats.binned_statistic_2d(r, z, r, 'mean', bins=[Xi, Yi])
+    z_avg = stats.binned_statistic_2d(r, z, z, 'mean', bins=[Xi, Yi])
+    theta_avg = stats.binned_statistic_2d(r, z, theta, 'mean', bins=[Xi, Yi])
+    ur_avg = stats.binned_statistic_2d(r, z, ur, 'mean', bins=[Xi, Yi])
+    up_avg = stats.binned_statistic_2d(r, z, up, 'mean', bins=[Xi, Yi])
+    w_avg = stats.binned_statistic_2d(r, z, w, 'mean', bins=[Xi, Yi])
+    urur_avg = stats.binned_statistic_2d(r, z, urur, 'mean', bins=[Xi, Yi])
+    ww_avg = stats.binned_statistic_2d(r, z, ww, 'mean', bins=[Xi, Yi])
+    upup_avg = stats.binned_statistic_2d(r, z, upup, 'mean', bins=[Xi, Yi])
+    uruz_avg = stats.binned_statistic_2d(r, z, uruz, 'mean', bins=[Xi, Yi])
+    urup_avg = stats.binned_statistic_2d(r, z, urup, 'mean', bins=[Xi, Yi])
+    upuz_avg = stats.binned_statistic_2d(r, z, upuz, 'mean', bins=[Xi, Yi])
 
     r = ma.masked_invalid(r_avg.statistic)
-    y = ma.masked_invalid(y_avg.statistic)
+    z = ma.masked_invalid(z_avg.statistic)
     theta = ma.masked_invalid(theta_avg.statistic)
     ur = ma.masked_invalid(ur_avg.statistic)
-    v = ma.masked_invalid(v_avg.statistic)
+    w = ma.masked_invalid(w_avg.statistic)
     up = ma.masked_invalid(up_avg.statistic)
     urur = ma.masked_invalid(urur_avg.statistic)
-    vv = ma.masked_invalid(vv_avg.statistic)
+    ww = ma.masked_invalid(ww_avg.statistic)
     upup = ma.masked_invalid(upup_avg.statistic)
-    uruy = ma.masked_invalid(uruy_avg.statistic)
+    uruz = ma.masked_invalid(uruz_avg.statistic)
     urup = ma.masked_invalid(urup_avg.statistic)
-    upuy = ma.masked_invalid(upuy_avg.statistic)
+    upuz = ma.masked_invalid(upuz_avg.statistic)
 
     # remove masked [always 1D array]
     r = r.compressed()
-    y = y.compressed()
+    z = z.compressed()
     theta = theta.compressed()
     ur = ur.compressed()
-    v = v.compressed()
     up = up.compressed()
+    w = w.compressed()
     urur = urur.compressed()
-    vv = vv.compressed()
     upup = upup.compressed()
-    uruy = uruy.compressed()
+    ww = ww.compressed()
+    uruz = uruz.compressed()
     urup = urup.compressed()
-    upuy = upuy.compressed()
+    upuz = upuz.compressed()
 
     # x = -r  # used for left:sim & sim
     x = r
-    y = y
-    z = theta
+    z = z
+    y = theta
     u = ur
-    v = v
-    w = up
+    v = up
+    w = w
     uu = urur
-    vv = vv
-    ww = upup
-    uv = uruy
-    uw = urup
-    vw = upuy
+    vv = upup
+    ww = ww
+    uv = urup
+    uw = uruz
+    vw = upuz
     # --------------- -------------------------------------------------------------
     # Interpolation of unstructured data on structured grid [right plot]
     # --------------- -------------------------------------------------------------
@@ -160,7 +155,7 @@ def count_averages(x, z, y, u, w, v, uu, uw, uv, ww, vw, vv):
     Xi = np.linspace(x_min_r, x_max_r, n_grid_x_r)
     # Xi = np.linspace(x_min_l, x_max_l, n_grid_x_r)  # used for left:sim & sim
     Yi = np.linspace(y_min, y_max, n_grid_y_r)
-    x_i, y_i = np.meshgrid(Xi, Yi)
+    x_i, z_i = np.meshgrid(Xi, Yi)
 
     # --------------- -------------------------------------------------------------
     # Data interpolation [old method]
@@ -208,16 +203,16 @@ def count_averages(x, z, y, u, w, v, uu, uw, uv, ww, vw, vv):
     # Data interpolation [new method]
     # --------------- -------------------------------------------------------------
 
-    z_i = griddata(np.transpose([x, y]), z, (x_i, y_i), method="nearest")
-    u_i = griddata(np.transpose([x, y]), u, (x_i, y_i), method="nearest")
-    v_i = griddata(np.transpose([x, y]), v, (x_i, y_i), method="nearest")
-    w_i = griddata(np.transpose([x, y]), w, (x_i, y_i), method="nearest")
-    uu_i = griddata(np.transpose([x, y]), uu, (x_i, y_i), method="nearest")
-    vv_i = griddata(np.transpose([x, y]), vv, (x_i, y_i), method="nearest")
-    ww_i = griddata(np.transpose([x, y]), ww, (x_i, y_i), method="nearest")
-    uv_i = griddata(np.transpose([x, y]), uv, (x_i, y_i), method="nearest")
-    uw_i = griddata(np.transpose([x, y]), uw, (x_i, y_i), method="nearest")
-    vw_i = griddata(np.transpose([x, y]), vw, (x_i, y_i), method="nearest")
+    y_i = griddata(np.transpose([x, z]), y, (x_i, z_i), method="nearest")
+    u_i = griddata(np.transpose([x, z]), u, (x_i, z_i), method="nearest")
+    v_i = griddata(np.transpose([x, z]), v, (x_i, z_i), method="nearest")
+    w_i = griddata(np.transpose([x, z]), w, (x_i, z_i), method="nearest")
+    uu_i = griddata(np.transpose([x, z]), uu, (x_i, z_i), method="nearest")
+    vv_i = griddata(np.transpose([x, z]), vv, (x_i, z_i), method="nearest")
+    ww_i = griddata(np.transpose([x, z]), ww, (x_i, z_i), method="nearest")
+    uv_i = griddata(np.transpose([x, z]), uv, (x_i, z_i), method="nearest")
+    uw_i = griddata(np.transpose([x, z]), uw, (x_i, z_i), method="nearest")
+    vw_i = griddata(np.transpose([x, z]), vw, (x_i, z_i), method="nearest")
 
     # --------------- -------------------------------------------------------------
     # Export output_file(s)
@@ -237,7 +232,7 @@ def count_averages(x, z, y, u, w, v, uu, uw, uv, ww, vw, vv):
                                 np.ravel(vw_i)
                                 ]).T
     x_r = np.reshape(x_i, (n_grid_y_r, n_grid_x_r))
-    y_r = np.reshape(y_i, (n_grid_y_r, n_grid_x_r))
+    z_r = np.reshape(z_i, (n_grid_y_r, n_grid_x_r))
     u_r = np.reshape(w_i, (n_grid_y_r, n_grid_x_r))
 
     fig, ax = plt.subplots(1, 1, figsize=[1000. / 300, 8000. / 300])
@@ -245,7 +240,7 @@ def count_averages(x, z, y, u, w, v, uu, uw, uv, ww, vw, vv):
     # Tune subplot layout, hspace for h interval
     plt.subplots_adjust(left=0.12, bottom=0.12, wspace=0.)
     # -------------------------------------------------------
-    cntr = ax.contourf(x_r, y_r, u_r,
+    cntr = ax.contourf(x_r, z_r, u_r,
                        levels=30,
                        extend='both')
     plt.show()
@@ -260,8 +255,10 @@ def save(inp_f, tup):
                delimiter='\t',
                header='nx: ' + str(np.shape(u_i)[0]) + ' '
                                                        'ny: ' + str(np.shape(u_i)[1]) + ' '
-                                                                                        '0:x 1:y 2:<z> 3:<u_r> 4:<u_x> 5:<u_phi> \
-                                                                                         6:<u_r u_r> 7:<u_x u_x> 8:<u_phi u_phi> \
-                                                                                         9:<u_r u_x> 10:<u_r u_phi> 11:<u_x u_phi>'
+                                                                                        '0:x 1:<y> 2:z 3:<u_r> '
+                                                                                        '4:<u_phi> 5:<u_z> \ 6:<u_r '
+                                                                                        'u_r> 7:<u_phi u_phi> 8:<u_z '
+                                                                                        'u_z> \ 9:<u_r u_phi> 10:<u_r '
+                                                                                        'u_z> 11:<u_phi u_z> '
                )
     return out_file

@@ -5,8 +5,8 @@ from process_data.parameters import *
 
 
 def fill_array(inp, w_exp_file, uv_exp_file, z_label):
-    x, z, y, u, w, v, uu, ww, vv, uw, uv, vw = np.loadtxt(inp,
-                                                          usecols=(0, 2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11),
+    x, y, z, u, v, w, uu, vv, ww, uv, uw, vw = np.loadtxt(inp,
+                                                          usecols=(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
                                                           delimiter='\t',
                                                           skiprows=1,
                                                           unpack=True)
@@ -76,13 +76,12 @@ def fill_array(inp, w_exp_file, uv_exp_file, z_label):
     vv_r = np.zeros(z.size)
     ww_r = np.zeros(z.size)
 
-
     r = np.zeros(z.size)
     z_const = np.round(z_label / D_r, 2)
 
     m = 0
     for i in range(z.size):
-        if y[i] == z_const:
+        if z[i] == z_const:
             # u наше radial (v в эксперименте)
             # w наше axial (u в эскперименте)
             # v наше tangential (w в эксперименте)
@@ -91,11 +90,11 @@ def fill_array(inp, w_exp_file, uv_exp_file, z_label):
             u_r[m] = u[i]
             w_r[m] = w[i]
             if not np.isnan(vv[i]):
-                vv_r[m] = (vv[i] + v[i] ** 2) / 18.7
+                vv_r[m] = (vv[i] + v[i] ** 2)
             if not np.isnan(uu[i]):
-                uu_r[m] = (uu[i] + u[i] ** 2) / 18.7
+                uu_r[m] = (uu[i] + u[i] ** 2)
             if not np.isnan(ww[i]):
-                ww_r[m] = (ww[i] + w[i] ** 2) / 18.7
+                ww_r[m] = (ww[i] + w[i] ** 2)
             r[m] = x[m]
             m = m + 1
 
@@ -144,33 +143,42 @@ def write_points_and_made_plot(inp_array, LES_mean, EXP_mean, LES_rms, EXP_rms, 
     # print(r, '\n\n\n', v_r, '\n\n\n', w_r)
     if LES_mean:
         ax.plot(r, v_r, color='red', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES tangential')
-        ax.plot(r, w_r, color='violet', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES axial')
-        ax.plot(r, u_r, color='teal', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES radial')
+        # ax.plot(r, w_r, color='violet', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES axial')
+        ax.plot(r, u_r, color='pink', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES radial')
     if EXP_mean:
         ax.plot(r_exp_w1, w_exp1, color='green', marker='o', linewidth=10, linestyle=':', label='EXP tangential')
-        ax.plot(r_exp1, u_exp1, color='blue', marker='o', linewidth=10, linestyle=':', label='EXP axial')
-        ax.plot(r_exp1, v_exp1, color='orange', marker='o', linewidth=10, linestyle=':', label='EXP radial')
         ax.plot(r_exp_w2, w_exp2, color='green', marker='o', linewidth=10, linestyle=':')
+
+        ax.plot(r_exp1, u_exp1, color='blue', marker='o', linewidth=10, linestyle=':', label='EXP axial')
         ax.plot(r_exp2, u_exp2, color='blue', marker='o', linewidth=10, linestyle=':')
+
+        ax.plot(r_exp1, v_exp1, color='orange', marker='o', linewidth=10, linestyle=':', label='EXP radial')
         ax.plot(r_exp2, v_exp2, color='orange', marker='o', linewidth=10, linestyle=':')
+
     if LES_rms:
         ax.plot(r, vv_r, color='teal', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES RMS tangential')
         # ax.plot(r, ww_r, color='black', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES RMS axial')
-        # ax.plot(r, uu_r, color='yellow', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES RMS radial')
+        ax.plot(r, uu_r, color='yellow', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10, label='LES RMS radial')
     if EXP_rms:
         ax.plot(r_exp_w1, ww_exp1, color='green', marker='o', linewidth=10, linestyle=':', label='EXP RMS tangential')
-        # ax.plot(r_exp1, uu_exp1, color='green', marker='o', linewidth=10, linestyle=':', label='EXP RMS axial')
-        # ax.plot(r_exp1, vv_exp1, color='orange', marker='o', linewidth=10, linestyle=':', label='EXP RMS radial')
         ax.plot(r_exp_w2, ww_exp2, color='green', marker='o', linewidth=10, linestyle=':')
-        # ax.plot(r_exp2, uu_exp2, color='green', marker='o', linewidth=10, linestyle=':')
-        # ax.plot(r_exp2, vv_exp2, color='orange', marker='o', linewidth=10, linestyle=':')
-    if MODEL: ax.plot(r, smooth_func, color='black', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10,
-                      label='ANALYTIC_DES')
+
+        # ax.plot(r_exp1, uu_exp1, color='black', marker='o', linewidth=10, linestyle=':', label='EXP RMS axial')
+        # ax.plot(r_exp2, uu_exp2, color='black', marker='o', linewidth=10, linestyle=':')
+
+        ax.plot(r_exp1, vv_exp1, color='orange', marker='o', linewidth=10, linestyle=':', label='EXP RMS radial')
+        ax.plot(r_exp2, vv_exp2, color='orange', marker='o', linewidth=10, linestyle=':')
+
+    if MODEL:
+        ax.plot(r, smooth_func, color='black', marker='o', ms=10, mfc='w', mew=0.5, linewidth=10,
+                label='ANALYTIC_DES')
+
     ax.set_xlim([0, 0.75])
+
     if limits_mean:
         ax.set_ylim([-0.25, 1.5])
-    # if limits_rms:
-    #     ax.set_ylim([0, 0.03])
+    if limits_rms:
+        ax.set_ylim([0, 0.03])
     for axis in ['top', 'bottom', 'left', 'right']:
         ax.spines[axis].set_linewidth(5)
         ax.spines[axis].set_zorder(0)
@@ -193,5 +201,5 @@ def write_points_and_made_plot(inp_array, LES_mean, EXP_mean, LES_rms, EXP_rms, 
     #             'Q_present = ' + str(calculate_stream.calc_cylinder_stream(calculate_stream.f_smooth_for_q_final))
     # ax.text(0.02, 1.2, plot_text, fontsize=40)
     fig.tight_layout()
-    plt.savefig(f'{name}')
+    plt.savefig('./pictures/' + f'{name}')
     plt.show()
