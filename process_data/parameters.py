@@ -3,6 +3,8 @@
 # De-dimensioning parameters
 # ---------------------------------------------------------------------------
 
+z_label = [2, 10, 30, 50]
+z_ = [z_label[i] * 1e-3 for i in range(len(z_label))]
 D_r = 38.1 * 1e-3  # [m]
 Ub_r = 18.7  # [m/s] Ub for try_11.5_0.32
 U_i = 8.3

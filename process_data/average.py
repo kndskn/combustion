@@ -13,7 +13,7 @@ from process_data.parameters import *
 def download_data_from_pw(inp):
     x, y, z, u, v, w, uu, vv, ww, uv, vw, uw \
         = np.loadtxt(inp,
-                     usecols=(0, 1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14),
+                     usecols=(0, 1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14),
                      delimiter=',',
                      skiprows=1,
                      unpack=True)
