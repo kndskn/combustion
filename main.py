@@ -3,13 +3,13 @@ from process_data.drawning import make_plot
 
 input_file = 'model_data/isotherm_structed_after_rans/structed_rans.csv'
 out_f = 'model_data/isotherm_structed_after_rans/structed_rans_average_data_to_2d_matplotlib.tsv'
-mean = True
-rms = False
+mean = False
+rms = True
 MODEL = False
 ave = False
 
 if mean:
-    _type = 'Mean'
+    _type = 'u_mean'
     LES_mean = True
     EXP_mean = True
     LIMITS_MEAN = True
@@ -17,7 +17,7 @@ if mean:
     EXP_rms = False
     LIMITS_RMS = False
 elif rms:
-    _type = 'Rms'
+    _type = 'u_rms'
     LES_rms = True
     EXP_rms = True
     LIMITS_RMS = True
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     else:
         output_file = out_f
     for i in range(len(parameters.z_)):
-        FIG_NAME = f'{_type}_z=' + str(parameters.z_label[i])
+        FIG_NAME = f'{_type}_at_z' + str(parameters.z_label[i]) + '_mm'
         w_exp = 'exp_data/cSwB1_ns_z' + str(parameters.z_label[i]) + '_W_MeanAndRMS.txt'
         uv_exp = 'exp_data/cSwB1_ns_z' + str(parameters.z_label[i]) + '_UV_MeanAndRMS.txt'
         zz = parameters.z_[i]
