@@ -191,7 +191,7 @@ def write_points_and_made_plot(inp_array, LES_mean, EXP_mean, LES_rms, EXP_rms, 
                              loc='upper left',
                              pad=0.25,
                              borderpad=0.,
-                             bbox_to_anchor=(0, 1),
+                             bbox_to_anchor=(0, 0.7),
                              bbox_transform=ax.transAxes,
                              frameon=True)
         ax.add_artist(atext)
@@ -226,13 +226,13 @@ def write_points_and_made_plot(inp_array, LES_mean, EXP_mean, LES_rms, EXP_rms, 
     #                labelbottom=True,  # Рисуем подписи снизу
     #                labelleft=True)
 
-    # ax.legend(fontsize=50)
+    ax.legend(fontsize=5)
     __txt = str(np.round(z_label / D_r, 2))
     # ax.set_title(r'$z / D = ' + __txt + '$')
     atext = AnchoredText(r'$z / D = ' + __txt + '$',
                          loc='upper center',
                          pad=0.1,
-                         borderpad=0.,
+                         borderpad=-1.5,
                          bbox_to_anchor=(0.5, 1),
                          bbox_transform=ax.transAxes,
                          frameon=True)
@@ -241,7 +241,7 @@ def write_points_and_made_plot(inp_array, LES_mean, EXP_mean, LES_rms, EXP_rms, 
     atext = AnchoredText(r'$r / D$',
                          loc='lower center',
                          pad=0.1,
-                         borderpad=0.,
+                         borderpad=-1.5,
                          bbox_to_anchor=(0.5, 0),
                          bbox_transform=ax.transAxes,
                          frameon=True)

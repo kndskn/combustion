@@ -46,6 +46,7 @@ def matplotlib_header():  # Matplotlib settings
         'savefig.dpi': 300,
         'figure.dpi': 300,
         'image.cmap': 'jet',
+        #'legend.loc': 'center left',
         'legend.frameon': True,
         'legend.fancybox': False,
         'legend.framealpha': 1,
@@ -59,7 +60,7 @@ def matplotlib_header():  # Matplotlib settings
         'legend.numpoints': 3,
         'lines.linewidth': 0.75,
         'lines.markeredgewidth': 0.5,
-        'lines.markersize': 4.,
+        'lines.markersize': 3.,
         'axes.linewidth': 0.2,
         'patch.linewidth': 0.2,
         # Extra latex packages:

@@ -10,10 +10,14 @@ from process_data.parameters import *
 # Save Data -> Point Data + Add Meta Data + Scientific Format
 
 
-def download_data_from_pw(inp):
+def download_data_from_pw(inp, REACT):
+    if REACT:
+        cols = (1, 2, 3, 10, 11, 12, 13, 14, 15, 16, 17, 18)
+    else:
+        cols = (0, 1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14)
     x, y, z, u, v, w, uu, vv, ww, uv, vw, uw \
         = np.loadtxt(inp,
-                     usecols=(0, 1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14),
+                     usecols=cols,
                      delimiter=',',
                      skiprows=1,
                      unpack=True)

@@ -7,8 +7,10 @@ path_points = '/test/points'
 
 
 def read_points(path):
-    """Read points from file
-    :return: radiuses of points"""
+    """
+    Read points from file
+    :return: radii of points
+    """
     x = []
     r = []
     with open(path, 'r') as f:
@@ -77,7 +79,7 @@ def main():
     # r = read_points(path_points)
     for filename in os.listdir(path):
         v = (read_vel(path, filename))
-        write_new_vel(v, v_mean, path, r=0.66)
+        write_new_vel(v, v_mean, path, r=1)
 
 
 if __name__ == '__main__':

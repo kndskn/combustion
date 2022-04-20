@@ -4,7 +4,7 @@
 
 TEXT_WIDTH = 443.86319  # pt (\showthe\textwidth)
 MATH_FONT = 'Palatino'  #\T1/ppl/m/n/10  (\showthe\font)
-MATH_FONTSIZE = 10
+MATH_FONTSIZE = 8
 TEXT_FONTSIZE = 10
 
 ASPECT_RATIO = (3508. / 2480.)
